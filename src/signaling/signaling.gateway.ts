@@ -1,4 +1,3 @@
-// src/signaling.gateway.ts
 import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayInit, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 

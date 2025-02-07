@@ -14,7 +14,6 @@
     <button id="answerCallBtn" style="display:none;">Answer Call</button>
 
     <script>
-      // WebRTC variables
       const localVideo = document.getElementById("localVideo");
       const remoteVideo = document.getElementById("remoteVideo");
       const startCallBtn = document.getElementById("startCallBtn");
@@ -22,7 +21,7 @@
 
       let localStream;
       let peerConnection;
-      let signalingSocket = new WebSocket("ws://localhost:3000"); // Assuming your WebSocket is running on localhost
+      let signalingSocket = new WebSocket("ws://localhost:3000");
 
       const iceServers = {
         iceServers: [
