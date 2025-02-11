@@ -1,7 +1,7 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, OnGatewayInit, WebSocketServer } from '@nestjs/websockets';
+import { WebSocketGateway, OnGatewayInit, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class SignalingGateway implements OnGatewayInit {
   @WebSocketServer()
   server: Server;
@@ -10,21 +10,30 @@ export class SignalingGateway implements OnGatewayInit {
     console.log('WebSocket server initialized');
   }
 
-  @SubscribeMessage('offer')
-  handleOffer(@MessageBody() data: any): void {
-    console.log('Received offer:', data);
-    this.server.emit('offer', data);
+  handleConnection(client: any) {
+    console.log('Client connected:', client.id);
   }
 
-  @SubscribeMessage('answer')
-  handleAnswer(@MessageBody() data: any): void {
-    console.log('Received answer:', data);
-    this.server.emit('answer', data);
+  handleDisconnect(client: any) {
+    console.log('Client disconnected:', client.id);
   }
 
-  @SubscribeMessage('ice-candidate')
-  handleIceCandidate(@MessageBody() data: any): void {
-    console.log('Received ice-candidate:', data);
-    this.server.emit('ice-candidate', data);
+  listenForEvents() {
+    this.server.on('connection', (socket) => {
+      socket.on('offer', (data) => {
+        console.log('Received offer:', data);
+        socket.broadcast.emit('offer', data);
+      });
+
+      socket.on('answer', (data) => {
+        console.log('Received answer:', data);
+        socket.broadcast.emit('answer', data);
+      });
+
+      socket.on('ice-candidate', (data) => {
+        console.log('Received ice-candidate:', data);
+        socket.broadcast.emit('ice-candidate', data);
+      });
+    });
   }
 }
