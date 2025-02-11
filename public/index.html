@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebRTC Video Call</title>
-  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script> <!-- Use Socket.io -->
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script> 
 </head>
 <body>
   <h2>WebRTC Video Call</h2>
@@ -22,7 +22,7 @@
 
     let localStream;
     let peerConnection;
-    const socket = io("http://192.168.2.30:3000"); // Updated IP only, no other changes
+    const socket = io("http://192.168.2.30:3000"); 
 
     const iceServers = {
       iceServers: [
@@ -32,11 +32,11 @@
     };
 
     async function startCall() {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); // FIXED: Camera activation issue
+      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); 
       localVideo.srcObject = localStream;
 
       peerConnection = new RTCPeerConnection(iceServers);
-      peerConnection.addStream(localStream); // FIXED: Ensure local stream is added correctly
+      peerConnection.addStream(localStream); 
 
       peerConnection.onicecandidate = event => {
         if (event.candidate) {
@@ -67,9 +67,9 @@
         remoteVideo.srcObject = event.stream;
       };
 
-      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); // FIXED: Camera activation issue
+      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true }); 
       localVideo.srcObject = localStream;
-      peerConnection.addStream(localStream); // FIXED: Ensures local video stream is sent to peer
+      peerConnection.addStream(localStream); 
 
       const answer = await peerConnection.createAnswer();
       await peerConnection.setLocalDescription(answer);
